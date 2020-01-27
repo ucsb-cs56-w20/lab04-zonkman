@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes","url":"allclasses-index.html"},{"p":"edu.ucsb.cs56.ratcalc","l":"Application"},{"p":"edu.ucsb.cs56.ratcalc.controllers","l":"HomeController"},{"p":"edu.ucsb.cs56.ratcalc.controllers","l":"OperationsController"},{"p":"edu.ucsb.cs56.ratcalc.formbeans","l":"RatCalcForm"},{"p":"edu.ucsb.cs56.ratcalc.model","l":"Rational"}]
