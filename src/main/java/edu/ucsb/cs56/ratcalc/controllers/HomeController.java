@@ -14,7 +14,7 @@ public class HomeController {
 
     @GetMapping("/")
     public String getHomepage() {
-        logger.info("Getting Home Page ... Yo, hey there M 12:30 section");
+        logger.info("Getting Home Page");
         return "index";
     }
 
