@@ -1,0 +1,36 @@
+# For Java
+*.class
+
+# Don't publish jacoco report
+
+docs/jacoco
+
+
+# For various IDEs
+.classpath
+.project
+.settings
+.vscode/
+*.sublime-*
+.idea
+*.iml
+
+# For Maven
+
+target
+dependency-reduced-pom.xml
+
+# For emacs/vim
+*~
+*.sw?
+\#*\#
+
+
+# For MacOS
+.DS_Store
+
+# Application specific secrets files
+
+heroku.json
+localhost.json
+
