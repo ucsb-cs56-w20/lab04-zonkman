@@ -13,6 +13,10 @@ import edu.ucsb.cs56.ratcalc.model.Rational;
 import javax.validation.Valid;
 import org.springframework.validation.BindingResult;
 
+interface GenericRationalOp {
+    public Rational apply(Rational r1, Rational r2);
+}
+
 @Controller
 public class OperationsController {
 
@@ -51,6 +55,17 @@ public class OperationsController {
         return false;
     }
 
+    public void doGenericOperation(@Valid RatCalcForm ratCalcForm, BindingResult bindingResult, GenericRationalOp opFunction) {
+        if (!bindingResult.hasErrors() && !checkDenominatorErrors(ratCalcForm)) {
+            Rational r1 = new Rational(ratCalcForm.getNum1(), ratCalcForm.getDenom1());
+            Rational r2 = new Rational(ratCalcForm.getNum2(), ratCalcForm.getDenom2());
+            Rational result = opFunction.apply(r1, r2);
+            logger.info("r1=" + r1 + " r2=" + r2 + " result=" + result);
+            ratCalcForm.setNumResult(result.getNumerator());
+            ratCalcForm.setDenomResult(result.getDenominator());
+        }
+    }
+
     @GetMapping("/add")
     public String getAdd(Model model) {
         RatCalcForm ratCalcForm = new RatCalcForm();
@@ -63,16 +78,7 @@ public class OperationsController {
     public String getAddResult(Model model, @Valid RatCalcForm ratCalcForm, BindingResult bindingResult) {
         logger.info("getAddResult ratCalcForm=" + ratCalcForm);
         ratCalcForm.setOp("+");
-
-        if (!bindingResult.hasErrors() && !checkDenominatorErrors(ratCalcForm)) {
-            Rational r1 = new Rational(ratCalcForm.getNum1(), ratCalcForm.getDenom1());
-            Rational r2 = new Rational(ratCalcForm.getNum2(), ratCalcForm.getDenom2());
-            Rational result = Rational.sum(r1, r2);
-            logger.info("r1=" + r1 + " r2=" + r2 + " result=" + result);
-            ratCalcForm.setNumResult(result.getNumerator());
-            ratCalcForm.setDenomResult(result.getDenominator());
-        }
-
+        doGenericOperation(ratCalcForm, bindingResult, (x,y) -> Rational.sum(x,y));
         model.addAttribute("ratCalcForm", ratCalcForm);
         return "operations/add";
     }
@@ -89,16 +95,7 @@ public class OperationsController {
     public String getSubtractResult(Model model, @Valid RatCalcForm ratCalcForm, BindingResult bindingResult) {
         logger.info("getSubtractResult ratCalcForm=" + ratCalcForm);
         ratCalcForm.setOp("-");
-
-        if (!bindingResult.hasErrors() && !checkDenominatorErrors(ratCalcForm)) {
-            Rational r1 = new Rational(ratCalcForm.getNum1(), ratCalcForm.getDenom1());
-            Rational r2 = new Rational(ratCalcForm.getNum2(), ratCalcForm.getDenom2());
-            Rational result = Rational.difference(r1, r2);
-            logger.info("r1=" + r1 + " r2=" + r2 + " result=" + result);
-            ratCalcForm.setNumResult(result.getNumerator());
-            ratCalcForm.setDenomResult(result.getDenominator());
-        }
-        
+        doGenericOperation(ratCalcForm, bindingResult, (x,y) -> Rational.difference(x,y));
         model.addAttribute("ratCalcForm", ratCalcForm);
         return "operations/subtract";
     }
@@ -107,6 +104,15 @@ public class OperationsController {
     public String getMultiply(Model model) {
         RatCalcForm ratCalcForm = new RatCalcForm();
         ratCalcForm.setOp("x");
+        model.addAttribute("ratCalcForm", ratCalcForm);
+        return "operations/multiply";
+    }
+
+    @GetMapping("/multiply/results")
+    public String getSubtractResult(Model model, @Valid RatCalcForm ratCalcForm, BindingResult bindingResult) {
+        logger.info("getMultiplyResult ratCalcForm=" + ratCalcForm);
+        ratCalcForm.setOp("-");
+        doGenericOperation(ratCalcForm, bindingResult, (x,y) -> Rational.product(x,y));
         model.addAttribute("ratCalcForm", ratCalcForm);
         return "operations/multiply";
     }
