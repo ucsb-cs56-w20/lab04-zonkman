@@ -128,7 +128,7 @@ public class OperationsController {
     }
 
     @GetMapping("/divide/results")
-    public String getMultiplyResult(Model model, @Valid RatCalcForm ratCalcForm, BindingResult bindingResult) {
+    public String getDivideResult(Model model, @Valid RatCalcForm ratCalcForm, BindingResult bindingResult) {
         logger.info("getDivideResult ratCalcForm=" + ratCalcForm);
         ratCalcForm.setOp("÷");
         doGenericOperation(ratCalcForm, bindingResult, (x,y) -> Rational.quotient(x,y), true);
