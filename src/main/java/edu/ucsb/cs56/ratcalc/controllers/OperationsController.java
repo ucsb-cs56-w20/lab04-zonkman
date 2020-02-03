@@ -109,7 +109,7 @@ public class OperationsController {
     }
 
     @GetMapping("/multiply/results")
-    public String getSubtractResult(Model model, @Valid RatCalcForm ratCalcForm, BindingResult bindingResult) {
+    public String getMultiplyResult(Model model, @Valid RatCalcForm ratCalcForm, BindingResult bindingResult) {
         logger.info("getMultiplyResult ratCalcForm=" + ratCalcForm);
         ratCalcForm.setOp("-");
         doGenericOperation(ratCalcForm, bindingResult, (x,y) -> Rational.product(x,y));
